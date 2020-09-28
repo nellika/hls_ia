@@ -28,34 +28,33 @@
 #include "lenet_cnn_float.h"
 
 // Top Level HLS function
-void lenet_cnn(	float 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
-				float 	conv1_kernel[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM],		// IN
-				float 	conv1_bias[CONV1_NBOUTPUT], 						                // IN
-				float 	conv2_kernel[CONV2_NBOUTPUT][POOL1_NBOUTPUT][CONV2_DIM][CONV2_DIM], // IN
-				float 	conv2_bias[CONV2_NBOUTPUT], 						                // IN
-				float 	fc1_kernel[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH],// IN
-				float 	fc1_bias[FC1_NBOUTPUT],			 				                    // IN
-				float 	fc2_kernel[FC2_NBOUTPUT][FC1_NBOUTPUT], 				            // IN
-				float 	fc2_bias[FC2_NBOUTPUT], 						                    // IN
+void lenet_cnn(	unsigned char 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
+				short 	conv1_kernel[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM],		// IN
+				short 	conv1_bias[CONV1_NBOUTPUT], 						                // IN
+				short 	conv2_kernel[CONV2_NBOUTPUT][POOL1_NBOUTPUT][CONV2_DIM][CONV2_DIM], // IN
+				short 	conv2_bias[CONV2_NBOUTPUT], 						                // IN
+				short 	fc1_kernel[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH],// IN
+				short 	fc1_bias[FC1_NBOUTPUT],			 				                    // IN
+				short 	fc2_kernel[FC2_NBOUTPUT][FC1_NBOUTPUT], 				            // IN
+				short 	fc2_bias[FC2_NBOUTPUT], 						                    // IN
 				float 	output[FC2_NBOUTPUT]) {							                    // OUT
   
-  float	 	conv1_output[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1_WIDTH]; 
-  float 	pool1_output[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_WIDTH]; 
-  float	 	conv2_output[CONV2_NBOUTPUT][CONV2_HEIGHT][CONV2_WIDTH]; 
-  float 	pool2_output[POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]; 
-  float 	fc1_output[FC1_NBOUTPUT]; 
+  short	 	conv1_output[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1_WIDTH]; 
+  short 	pool1_output[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_WIDTH]; 
+  short	 	conv2_output[CONV2_NBOUTPUT][CONV2_HEIGHT][CONV2_WIDTH]; 
+  short 	pool2_output[POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]; 
+  short 	fc1_output[FC1_NBOUTPUT]; 
   short 	k, y, x; 
 
   Conv1_28x28x1_5x5x20_1_0(input, conv1_kernel, conv1_bias, conv1_output); 
-/*  printf("\nCONV1_WIDTH / CONV1_HEIGHT: %d / %d\n", CONV1_WIDTH, CONV1_HEIGHT); 
-  WritePgmFile(output_filename, (float *)CONV1_OUTPUT[0], CONV1_WIDTH, CONV1_HEIGHT); 
+/* printf("\nCONV1_WIDTH / CONV1_HEIGHT: %d / %d\n", CONV1_WIDTH, CONV1_HEIGHT); 
+  //WritePgmFile(output_filename, (float *)CONV1_OUTPUT[0], CONV1_WIDTH, CONV1_HEIGHT); 
   printf("\nConv1 output[0]: \n"); 
   for (y=0; y<CONV1_HEIGHT; y++) {
     for (x=0; x<CONV1_WIDTH; x++) 
-      printf("%.2f ", conv1_output[0][y][x]); 
+      printf("%f ", conv1_output[0][y][x]); 
     printf("\n"); 
-  }
-*/
+  }*/
 
   Pool1_24x24x20_2x2x20_2_0(conv1_output, pool1_output); 
 /*  printf("\nPOOL1_WIDTH / POOL1_HEIGHT: %d / %d\n", POOL1_WIDTH, POOL1_HEIGHT); 
@@ -69,34 +68,33 @@ void lenet_cnn(	float 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
 */
 
   Conv2_12x12x20_5x5x40_1_0(pool1_output, conv2_kernel, conv2_bias, conv2_output); 
-/*  printf("\nCONV2_WIDTH / CONV2_HEIGHT: %d / %d\n", CONV2_WIDTH, CONV2_HEIGHT); 
-  WritePgmFile(output_filename, (float *)CONV2_OUTPUT[0], CONV2_WIDTH, CONV2_HEIGHT); 
+  /*printf("\nCONV2_WIDTH / CONV2_HEIGHT: %d / %d\n", CONV2_WIDTH, CONV2_HEIGHT); 
+  //WritePgmFile(output_filename, (float *)CONV2_OUTPUT[0], CONV2_WIDTH, CONV2_HEIGHT); 
   printf("\nConv2 output[0]: \n");
   for (y=0; y<CONV2_HEIGHT; y++) {
     for (x=0; x<CONV2_WIDTH; x++) 
-      printf("%.2f ", conv2_output[0][y][x]); 
+      printf("%d ", conv2_output[0][y][x]); 
     printf("\n"); 
-  }
-*/
+  }*/
+
 
   Pool2_8x8x40_2x2x40_2_0(conv2_output, pool2_output); 
 /*  printf("\nPOOL2_WIDTH / POOL2_HEIGHT: %d / %d\n", POOL2_WIDTH, POOL2_HEIGHT); 
-  WritePgmFile(output_filename, (float *)POOL2_OUTPUT[15], POOL2_WIDTH, POOL2_HEIGHT); 
+//  WritePgmFile(output_filename, (float *)POOL2_OUTPUT[15], POOL2_WIDTH, POOL2_HEIGHT); 
   printf("\nPool2 output[0]: \n"); 
   for (y=0; y<POOL2_HEIGHT; y++) {
     for (x=0; x<POOL2_WIDTH; x++) 
-      printf("%.2f ", pool2_output[0][y][x]); 
+      printf("%f ", pool2_output[0][y][x]); 
     printf("\n"); 
-  }
-*/
+  }*/
 
   Fc1_40_400(pool2_output, fc1_kernel, fc1_bias, fc1_output); 
-/*  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
+  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
   for (k = 0; k < FC1_NBOUTPUT; k++)
-    printf("%.2f ", fc1_output[k]); 
-*/
+    printf("%d ", fc1_output[k]); 
 
-  Fc2_400_10(fc1_output, fc2_kernel, fc2_bias, output); 
+
+//  Fc2_400_10(fc1_output, fc2_kernel, fc2_bias, output); 
 /*  printf("\n\nFc2 output[0..%d]: \n", FC2_NBOUTPUT-1);
   for (k = 0; k < FC2_NBOUTPUT; k++)
     printf("%.2f ", output[k]); 
@@ -106,15 +104,15 @@ void lenet_cnn(	float 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
 
 // GLOBAL VARIABLES
 unsigned char 	REF_IMG[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH]; 
-float 			INPUT_NORM[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH]; 
-float 			CONV1_KERNEL[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]; 
-float 			CONV1_BIAS[CONV1_NBOUTPUT]; 
-float 			CONV2_KERNEL[CONV2_NBOUTPUT][POOL1_NBOUTPUT][CONV2_DIM][CONV2_DIM]; 
-float 			CONV2_BIAS[CONV2_NBOUTPUT]; 
-float 			FC1_KERNEL[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]; 
-float 			FC1_BIAS[FC1_NBOUTPUT]; 
-float 			FC2_KERNEL[FC2_NBOUTPUT][FC1_NBOUTPUT]; 
-float 			FC2_BIAS[FC2_NBOUTPUT]; 
+unsigned char		INPUT_NORM[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH]; 
+short 			CONV1_KERNEL[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]; 
+short 			CONV1_BIAS[CONV1_NBOUTPUT]; 
+short 			CONV2_KERNEL[CONV2_NBOUTPUT][POOL1_NBOUTPUT][CONV2_DIM][CONV2_DIM]; 
+short 			CONV2_BIAS[CONV2_NBOUTPUT]; 
+short 			FC1_KERNEL[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]; 
+short 			FC1_BIAS[FC1_NBOUTPUT]; 
+short 			FC2_KERNEL[FC2_NBOUTPUT][FC1_NBOUTPUT]; 
+short 			FC2_BIAS[FC2_NBOUTPUT]; 
 float 			FC2_OUTPUT[FC2_NBOUTPUT]; 
 float			SOFTMAX_OUTPUT[FC2_NBOUTPUT]; 
 
@@ -205,14 +203,17 @@ void main() {
 
     ReadPgmFile(img_filename, (unsigned char *)REF_IMG); 
 
-    NormalizeImg((unsigned char *)REF_IMG, (float *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH); 
+    //NormalizeImg((unsigned char *)REF_IMG, (float *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH); 
+    NormalizeImg((unsigned char *)REF_IMG, (unsigned char *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH); 
 /*  for (z = 0; z < IMG_DEPTH; z++)
     for (y=0; y<IMG_HEIGHT; y++) {
       for (x=0; x<IMG_WIDTH; x++)  
-        printf("%.2f ", INPUT_NORM[z][y][x]);
+        printf("%d ", INPUT_NORM[z][y][x]);
       printf("\n");
-    }
-*/
+    }*/
+
+
+
 
 ////    xilinx_start = sds_clock_counter();
 

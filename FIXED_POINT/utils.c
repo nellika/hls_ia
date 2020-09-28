@@ -104,12 +104,12 @@ void RescaleImg(unsigned char *input, short width,short height, float *output, s
   }
 }
 
-void NormalizeImg(unsigned char *input, float *output, short width, short height) {
+void NormalizeImg(unsigned char *input, unsigned char *output, short width, short height) {
   short x, y; 
 
   for (y=0; y<height; y++) 
     for (x=0; x<width; x++) 
-      output[(y*width)+x] = ( (float)input[(y*width)+x] / 255 ); 
+      output[(y*width)+x] = (unsigned char)( (float)(input[(y*width)+x]) * (1 << FIXED_POINT) /255);  
 
 }
 
@@ -147,7 +147,7 @@ void WriteWeights(char *filename, short weight[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_
 
 
 
-void ReadConv1Weights(char *filename, char *datasetname, float weight[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]) {
+void ReadConv1Weights(char *filename, char *datasetname, short weight[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]) {
   unsigned short 	x, y, z, k; 
   float 	 		buffer_float[CONV1_DIM][CONV1_DIM][IMG_DEPTH][CONV1_NBOUTPUT]; // y, x, z, k
   hid_t 	 		file, dataspace, dataset; 
@@ -160,7 +160,7 @@ void ReadConv1Weights(char *filename, char *datasetname, float weight[CONV1_NBOU
     for (y = 0; y < CONV1_DIM; y++)
       for (x = 0; x < CONV1_DIM; x++) 
 		for (z = 0; z < IMG_DEPTH; z++) 
-		  weight[k][z][y][x] = buffer_float[y][x][z][k]; // re-ordering [y][x][z][k] -> [k][z][y][x]
+		  weight[k][z][y][x] = buffer_float[y][x][z][k] * (1 << FIXED_POINT); // re-ordering [y][x][z][k] -> [k][z][y][x]
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -168,7 +168,7 @@ void ReadConv1Weights(char *filename, char *datasetname, float weight[CONV1_NBOU
 }
 
 
-void ReadConv1Bias(char *filename, char *datasetname, float *bias) {
+void ReadConv1Bias(char *filename, char *datasetname, short *bias) {
   unsigned short 	k; 
   hid_t 	 		file, dataspace, dataset; 
   herr_t 	 		status; 
@@ -178,7 +178,7 @@ void ReadConv1Bias(char *filename, char *datasetname, float *bias) {
   dataset = H5Dopen (file, datasetname, H5P_DEFAULT);
   status = H5Dread (dataset, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL, H5P_DEFAULT, buffer_float); 
   for (k = 0; k < CONV1_NBOUTPUT; k++) 
-    bias[k] = buffer_float[k]; 
+    bias[k] = buffer_float[k] * (1 << FIXED_POINT); 
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -186,7 +186,7 @@ void ReadConv1Bias(char *filename, char *datasetname, float *bias) {
 }
 
 
-void ReadConv2Weights(char *filename, char *datasetname, float weight[CONV2_NBOUTPUT][CONV1_NBOUTPUT][CONV2_DIM][CONV2_DIM]) {
+void ReadConv2Weights(char *filename, char *datasetname, short weight[CONV2_NBOUTPUT][CONV1_NBOUTPUT][CONV2_DIM][CONV2_DIM]) {
   unsigned short 	x, y, z, k; 
   float 	 		buffer_float[CONV2_DIM][CONV2_DIM][CONV1_NBOUTPUT][CONV2_NBOUTPUT]; // y, x, z, k
   hid_t 	 		file, dataspace, dataset; 
@@ -199,7 +199,7 @@ void ReadConv2Weights(char *filename, char *datasetname, float weight[CONV2_NBOU
     for (y = 0; y < CONV2_DIM; y++)
       for (x = 0; x < CONV2_DIM; x++)
 		for (z = 0; z < CONV1_NBOUTPUT; z++)
-		  weight[k][z][y][x] = buffer_float[y][x][z][k]; // re-ordering [y][x][z][k] -> [k][z][y][x]
+		  weight[k][z][y][x] = buffer_float[y][x][z][k] * (1 << FIXED_POINT);; // re-ordering [y][x][z][k] -> [k][z][y][x]
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -207,7 +207,7 @@ void ReadConv2Weights(char *filename, char *datasetname, float weight[CONV2_NBOU
 }
 
 
-void ReadConv2Bias(char *filename, char *datasetname, float *bias) {
+void ReadConv2Bias(char *filename, char *datasetname, short *bias) {
   unsigned short 	k; 
   hid_t 	 		file, dataspace, dataset; 
   herr_t 	 		status; 
@@ -217,7 +217,7 @@ void ReadConv2Bias(char *filename, char *datasetname, float *bias) {
   dataset = H5Dopen (file, datasetname, H5P_DEFAULT);
   status = H5Dread (dataset, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL, H5P_DEFAULT, buffer_float); 
   for (k = 0; k < CONV2_NBOUTPUT; k++) 
-    bias[k] = buffer_float[k]; 
+    bias[k] = buffer_float[k] * (1 << FIXED_POINT);
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -228,7 +228,7 @@ void ReadConv2Bias(char *filename, char *datasetname, float *bias) {
 // Flatten layer impacts reading order: 
 // Keras / Tensorflow uses NHWC channels last
 // so the 800 (50*4*4) flatten values are in order NHWC channels last
-void ReadFc1Weights(char *filename, char *datasetname, float weight[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]) {
+void ReadFc1Weights(char *filename, char *datasetname, short weight[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]) {
   unsigned short 	x, y, z, k; 
   //float 			buffer[POOL2_NBOUTPUT*POOL2_HEIGHT*POOL2_WIDTH][FC1_NBOUTPUT]; // zyx, k
   float 			buffer_float[POOL2_HEIGHT*POOL2_WIDTH*POOL2_NBOUTPUT][FC1_NBOUTPUT]; // yxz, k
@@ -243,7 +243,7 @@ void ReadFc1Weights(char *filename, char *datasetname, float weight[FC1_NBOUTPUT
       for (y = 0; y < POOL2_HEIGHT; y++)
         for (x = 0; x < POOL2_WIDTH; x++)
 		  //weight[k][z][y][x] = buffer[(z*POOL2_WIDTH*POOL2_HEIGHT)+(y*POOL2_WIDTH)+x][k]; // re-ordering [zyx][k] -> [k][z][y][x]
-		  weight[k][z][y][x] = buffer_float[(y*POOL2_WIDTH*POOL2_NBOUTPUT)+(x*POOL2_NBOUTPUT)+z][k]; // re-ordering [yxz][k] -> [k][z][y][x]
+		  weight[k][z][y][x] = (buffer_float[(y*POOL2_WIDTH*POOL2_NBOUTPUT)+(x*POOL2_NBOUTPUT)+z][k]) * (1 << FIXED_POINT); // re-ordering [yxz][k] -> [k][z][y][x]
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -251,7 +251,7 @@ void ReadFc1Weights(char *filename, char *datasetname, float weight[FC1_NBOUTPUT
 }
 
 
-void ReadFc1Bias(char *filename, char *datasetname, float *bias) {
+void ReadFc1Bias(char *filename, char *datasetname, short *bias) {
   unsigned short 	k; 
   hid_t 	 		file, dataspace, dataset; 
   herr_t 	 		status; 
@@ -261,7 +261,7 @@ void ReadFc1Bias(char *filename, char *datasetname, float *bias) {
   dataset = H5Dopen (file, datasetname, H5P_DEFAULT);
   status = H5Dread (dataset, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL, H5P_DEFAULT, buffer_float); 
   for (k = 0; k < FC1_NBOUTPUT; k++) 
-    bias[k] = buffer_float[k]; 
+    bias[k] = buffer_float[k] * (1 << FIXED_POINT); 
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -269,7 +269,7 @@ void ReadFc1Bias(char *filename, char *datasetname, float *bias) {
 }
 
 
-void ReadFc2Weights(char *filename, char *datasetname, float weight[FC2_NBOUTPUT][FC1_NBOUTPUT]) {
+void ReadFc2Weights(char *filename, char *datasetname, short weight[FC2_NBOUTPUT][FC1_NBOUTPUT]) {
   unsigned short 	z, k; 
   float 			buffer_float[FC1_NBOUTPUT][FC2_NBOUTPUT]; // z, k
   hid_t 			file, dataspace, dataset; 
@@ -280,7 +280,7 @@ void ReadFc2Weights(char *filename, char *datasetname, float weight[FC2_NBOUTPUT
   status = H5Dread (dataset, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL, H5P_DEFAULT, buffer_float); 
   for (k = 0; k < FC2_NBOUTPUT; k++)
     for (z = 0; z < FC1_NBOUTPUT; z++)
-	  weight[k][z] = buffer_float[z][k]; // re-ordering [z][k] -> [k][z]
+	  weight[k][z] = buffer_float[z][k] * (1 << FIXED_POINT); // re-ordering [z][k] -> [k][z]
 
   status = H5Dclose (dataset);
   status = H5Fclose (file);
@@ -288,7 +288,7 @@ void ReadFc2Weights(char *filename, char *datasetname, float weight[FC2_NBOUTPUT
 }
 
 
-void ReadFc2Bias(char *filename, char *datasetname, float *bias) {
+void ReadFc2Bias(char *filename, char *datasetname, short *bias) {
   unsigned short 	k; 
   hid_t 	 		file, dataspace, dataset; 
   herr_t 	 		status; 

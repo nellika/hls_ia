@@ -68,6 +68,7 @@ void lenet_cnn(	float 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
   }
 */
 
+
   Conv2_12x12x20_5x5x40_1_0(pool1_output, conv2_kernel, conv2_bias, conv2_output); 
 /*  printf("\nCONV2_WIDTH / CONV2_HEIGHT: %d / %d\n", CONV2_WIDTH, CONV2_HEIGHT); 
   WritePgmFile(output_filename, (float *)CONV2_OUTPUT[0], CONV2_WIDTH, CONV2_HEIGHT); 
@@ -91,10 +92,10 @@ void lenet_cnn(	float 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							// IN
 */
 
   Fc1_40_400(pool2_output, fc1_kernel, fc1_bias, fc1_output); 
-/*  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
+  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
   for (k = 0; k < FC1_NBOUTPUT; k++)
-    printf("%.2f ", fc1_output[k]); 
-*/
+    printf("%f ", fc1_output[k]); 
+
 
   Fc2_400_10(fc1_output, fc2_kernel, fc2_bias, output); 
 /*  printf("\n\nFc2 output[0..%d]: \n", FC2_NBOUTPUT-1);
