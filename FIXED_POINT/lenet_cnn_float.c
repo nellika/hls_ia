@@ -37,7 +37,7 @@ void lenet_cnn(	unsigned char 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							/
 				short 	fc1_bias[FC1_NBOUTPUT],			 				                    // IN
 				short 	fc2_kernel[FC2_NBOUTPUT][FC1_NBOUTPUT], 				            // IN
 				short 	fc2_bias[FC2_NBOUTPUT], 						                    // IN
-				float 	output[FC2_NBOUTPUT]) {							                    // OUT
+				short 	output[FC2_NBOUTPUT]) {							                    // OUT
   
   short	 	conv1_output[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1_WIDTH]; 
   short 	pool1_output[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_WIDTH]; 
@@ -89,18 +89,17 @@ void lenet_cnn(	unsigned char 	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 							/
   }*/
 
   Fc1_40_400(pool2_output, fc1_kernel, fc1_bias, fc1_output); 
-  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
+/*  printf("\n\nFc1 output[0..%d]: \n", FC1_NBOUTPUT-1);
   for (k = 0; k < FC1_NBOUTPUT; k++)
     printf("%d ", fc1_output[k]); 
+*/
 
-
-//  Fc2_400_10(fc1_output, fc2_kernel, fc2_bias, output); 
+  Fc2_400_10(fc1_output, fc2_kernel, fc2_bias, output); 
 /*  printf("\n\nFc2 output[0..%d]: \n", FC2_NBOUTPUT-1);
   for (k = 0; k < FC2_NBOUTPUT; k++)
-    printf("%.2f ", output[k]); 
+    printf("%d ", output[k]); 
 */
 }
-
 
 // GLOBAL VARIABLES
 unsigned char 	REF_IMG[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH]; 
@@ -113,7 +112,7 @@ short 			FC1_KERNEL[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH];
 short 			FC1_BIAS[FC1_NBOUTPUT]; 
 short 			FC2_KERNEL[FC2_NBOUTPUT][FC1_NBOUTPUT]; 
 short 			FC2_BIAS[FC2_NBOUTPUT]; 
-float 			FC2_OUTPUT[FC2_NBOUTPUT]; 
+short 			FC2_OUTPUT[FC2_NBOUTPUT]; 
 float			SOFTMAX_OUTPUT[FC2_NBOUTPUT]; 
 
 /**

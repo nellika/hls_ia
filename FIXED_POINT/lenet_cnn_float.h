@@ -87,7 +87,7 @@ void Fc1_40_400(	short 	input[POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH], 			   
 void Fc2_400_10(	short 	input[FC1_NBOUTPUT], 			        // IN
 			        short 	kernel[FC2_NBOUTPUT][FC1_NBOUTPUT],	    // IN
 			        short 	bias[FC2_NBOUTPUT],			            // IN
-			        float 	output[FC2_NBOUTPUT]); 			        // OUT
+			        short 	output[FC2_NBOUTPUT]); 			        // OUT
 
-void Softmax(float vector_in[FC2_NBOUTPUT], float vector_out[FC2_NBOUTPUT]); 
+void Softmax(short vector_in[FC2_NBOUTPUT], float vector_out[FC2_NBOUTPUT]); 
 
