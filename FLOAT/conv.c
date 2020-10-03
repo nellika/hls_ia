@@ -35,12 +35,14 @@ void Conv1_28x28x1_5x5x20_1_0(  float input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 	
         }
         conv_px=sumProduct(imgPart,kernel[o][0]);
 
-        //neuron activation
+        //neuron activation >> if removed: current accuracy is better, but we dont want overtrained stuff...
         if(conv_px+bias[o]<=0){
           output[o][h][w]=0;
         }else{
           output[o][h][w]=conv_px + bias[o];
         }
+
+        output[o][h][w]=conv_px + bias[o];
         
       }
     }

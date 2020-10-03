@@ -108,8 +108,9 @@ void NormalizeImg(unsigned char *input, unsigned char *output, short width, shor
   short x, y; 
 
   for (y=0; y<height; y++) 
-    for (x=0; x<width; x++) 
-      output[(y*width)+x] = (unsigned char)( (float)(input[(y*width)+x]) * (1 << FIXED_POINT) /255);  
+    for (x=0; x<width; x++)
+      output[(y*width)+x] = input[(y*width)+x];
+      //output[(y*width)+x] = (unsigned char)( (float)(input[(y*width)+x]) * (1 << FIXED_POINT) /255);  
 
 }
 

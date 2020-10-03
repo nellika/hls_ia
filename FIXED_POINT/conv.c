@@ -3,19 +3,7 @@
 
 #include "lenet_cnn_float.h"
 
-float sumProduct( float imgPart[CONV1_DIM][CONV1_DIM], float filter[CONV1_DIM][CONV1_DIM]){
-  short y,x;
-  float conv_result=0;
-
-  for(y = 0; y < CONV1_DIM; y++){
-      for(x = 0; x < CONV1_DIM; x++){
-        conv_result+=imgPart[y][x]*filter[y][x];
-      }
-  }
-  return conv_result;
-}
-
-float sumProductF( short imgPart[CONV1_DIM][CONV1_DIM], short filter[CONV1_DIM][CONV1_DIM]){
+short sumProduct( short imgPart[CONV1_DIM][CONV1_DIM], short filter[CONV1_DIM][CONV1_DIM]){
   short y,x;
   int conv_result=0;
 
@@ -45,13 +33,14 @@ void Conv1_28x28x1_5x5x20_1_0(  unsigned char input[IMG_DEPTH][IMG_HEIGHT][IMG_W
             imgPart[y][x]=input[0][h+y][w+x];
           }
         }
-        conv_px=sumProductF(imgPart,kernel[o][0]);
+        conv_px=sumProduct(imgPart,kernel[o][0]);
         
         //neuron activation
+        //<=-100 works with better accuracy, but thats not the point here...
         if(conv_px+bias[o]<=0){
           output[o][h][w]=0;
         }else{
-          output[o][h][w]=conv_px + (float)bias[o];
+          output[o][h][w]=conv_px + bias[o];
         }
         
       }
@@ -81,7 +70,7 @@ void Conv2_12x12x20_5x5x40_1_0( short input[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_
             }
           }
 
-          conv_px=sumProductF(imgPart,kernel[f][d]);
+          conv_px=sumProduct(imgPart,kernel[f][d]);
 
           if(d==0){ //to initialize first element
             output[f][h][w] = conv_px;

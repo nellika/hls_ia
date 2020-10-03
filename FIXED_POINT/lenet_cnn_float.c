@@ -256,7 +256,7 @@ void main() {
   } // END MAIN TEST LOOP
   gettimeofday(&end, NULL); 
 
-  tdiff = (double)(end.tv_sec-start.tv_sec); 
+  tdiff = (double)(end.tv_sec-start.tv_sec)+(double)(end.tv_usec-start.tv_usec)/1000000; 
   printf("TOTAL PROCESSING TIME (gettimeofday): %f s\n", tdiff); 
 
   printf("\n\nErrors : %d / %d", error, m); 
