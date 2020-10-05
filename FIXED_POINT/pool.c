@@ -5,7 +5,7 @@
 
 float maxPooling(float poolArray[]){
     float max=poolArray[0];
-    short p;
+    unsigned short p;
 
     for (p = 1; p < POOL1_DIM*POOL1_DIM; p++){
         if(poolArray[p] > max){
@@ -17,7 +17,7 @@ float maxPooling(float poolArray[]){
 
 short maxPoolingF(short poolArray[]){
     short max=poolArray[0];
-    short p;
+    unsigned short p;
 
     for (p = 1; p < POOL1_DIM*POOL1_DIM; p++){
         if(poolArray[p] > max){
@@ -30,7 +30,7 @@ short maxPoolingF(short poolArray[]){
 void Pool1_24x24x20_2x2x20_2_0(	short 	input[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1_WIDTH], 	    // IN
 				                short 	output[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_WIDTH])		// OUT
 {
-    short i,h,w,out_h,out_w;
+    unsigned short i,h,w,out_h,out_w;
     short maxPool;
 
     for (i = 0; i < CONV1_NBOUTPUT; i++){
@@ -50,7 +50,7 @@ void Pool1_24x24x20_2x2x20_2_0(	short 	input[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1
 void Pool2_8x8x40_2x2x40_2_0(	short 	input[CONV2_NBOUTPUT][CONV2_HEIGHT][CONV2_WIDTH], 	    // IN
 				                short 	output[POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH])		// OUT
 {   
-    short j,h,w,out_h,out_w;
+    unsigned short j,h,w,out_h,out_w;
     short maxPool;
 
     for (j = 0; j < CONV2_NBOUTPUT; j++){

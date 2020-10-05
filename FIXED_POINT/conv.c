@@ -4,7 +4,7 @@
 #include "lenet_cnn_float.h"
 
 short sumProduct( short imgPart[CONV1_DIM][CONV1_DIM], short filter[CONV1_DIM][CONV1_DIM]){
-  short y,x;
+  unsigned short y,x;
   int conv_result=0;
 
   for(y = 0; y < CONV1_DIM; y++){
@@ -54,7 +54,7 @@ void Conv2_12x12x20_5x5x40_1_0( short input[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_
 				                short bias[CONV2_NBOUTPUT], 						                    // IN
 				                short output[CONV2_NBOUTPUT][CONV2_HEIGHT][CONV2_WIDTH]) 		        // OUT
 {
-  short f,d,o,h,w,x,y,oh,ow;
+  unsigned short f,d,o,h,w,x,y,oh,ow;
   short imgPart[CONV2_DIM][CONV2_DIM];
   short conv_px;
   

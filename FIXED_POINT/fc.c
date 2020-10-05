@@ -46,7 +46,7 @@ void Fc1_40_400(    short 	input[POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH], 			
 			        short 	bias[FC1_NBOUTPUT],							                        // IN
 			        short 	output[FC1_NBOUTPUT]) 							                    // OUT
 {
-  short o,d,h,w;
+  unsigned short o,d,h,w;
   short fc_sum;
   int temp_sum;
 
@@ -75,7 +75,7 @@ void Fc2_400_10(	short 	input[FC1_NBOUTPUT], 			        // IN
 			        short 	bias[FC2_NBOUTPUT],			            // IN
 			        short 	output[FC2_NBOUTPUT]) 			        // OUT
 {
-  short o,d;
+  unsigned short o,d;
   int temp_sum;
   short fc_sum;
   float dummy=0;

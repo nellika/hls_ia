@@ -109,6 +109,7 @@ void NormalizeImg(unsigned char *input, unsigned char *output, short width, shor
 
   for (y=0; y<height; y++) 
     for (x=0; x<width; x++)
+      //for some strange reason, it is faster if I leave this function here... no need for this at all, could use REF_IMG at the beginning
       output[(y*width)+x] = input[(y*width)+x];
       //output[(y*width)+x] = (unsigned char)( (float)(input[(y*width)+x]) * (1 << FIXED_POINT) /255);  
 
