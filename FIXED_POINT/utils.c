@@ -40,7 +40,6 @@ void ReadPgmFile(char *filename, unsigned char *pix) {
   fclose(pgm_file); 
 }
 
-
 void WritePgmFile(char *filename, float *pix, short width, short height) {
   FILE* pgm_file; 
   short i; 

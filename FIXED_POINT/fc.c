@@ -4,10 +4,10 @@
 
 #include "lenet_cnn_float.h"
 
-/*void Softmax(short vector_in[FC2_NBOUTPUT], float vector_out[FC2_NBOUTPUT]){
+/*void Softmax(short vector_in[FC2_NBOUTPUT], int vector_out[FC2_NBOUTPUT]){
   long vector_exp[FC2_NBOUTPUT];
   long exp_sum=0;
-  short vector_summy[FC2_NBOUTPUT];
+  int vector_summy[FC2_NBOUTPUT];
   short bckshifted_input;
 
   for (short i = 0; i < FC2_NBOUTPUT; i++){
@@ -15,11 +15,14 @@
     vector_exp[i]=exp(bckshifted_input);
     exp_sum+=vector_exp[i];
   }
-
+  
+  exp_sum = exp_sum >> 4;
+  //printf("%lu\n",exp_sum);
   for(short j = 0; j < FC2_NBOUTPUT; j++){
-    vector_summy[j]=vector_exp[j]/exp_sum;
-    vector_out[j]=0;
+    vector_out[j]=vector_exp[j]/exp_sum;
+    //vector_out[j]=0;
   }
+  //printf("\n");
 }*/
 
 
@@ -36,7 +39,6 @@ void Softmax(short vector_in[FC2_NBOUTPUT], float vector_out[FC2_NBOUTPUT]){
 
   for(short j = 0; j < FC2_NBOUTPUT; j++){
     vector_out[j]=vector_exp[j]/exp_sum;
-    //printf("%f ", vector_out[j]);
   }
 }
 
@@ -78,19 +80,21 @@ void Fc2_400_10(	short 	input[FC1_NBOUTPUT], 			        // IN
   unsigned short o,d;
   int temp_sum;
   short fc_sum;
-  float dummy=0;
 
   for(o = 0; o < FC2_NBOUTPUT; o++){
     temp_sum=0;
     for(d=0;d<FC1_NBOUTPUT;d++){
+#pragma HLS PIPELINE
       temp_sum+=(input[d]*kernel[o][d]);
     }
     fc_sum=temp_sum >> FIXED_POINT;
+    output[o]=fc_sum+bias[o];
+    
     //neuron activation
-    if(fc_sum+bias[o]<=0){
+    /*if(fc_sum+bias[o]<=0){
       output[o]=0;
     }else{
       output[o]=fc_sum+bias[o];
-    }
+    }*/
   }  
 }
