@@ -120,7 +120,7 @@ float			SOFTMAX_OUTPUT[FC2_NBOUTPUT];
   * @brief   main code deploying a LeNet inference CNN on MNIST dataset
   */
 
-void main() {
+int main() {
   short 	x, y, z, k, m; 
   char 		*hdf5_filename = 		"lenet_weights.hdf5"; 
   char 		*conv1_weights = 		"conv2d_1/conv2d_1/kernel:0"; 
@@ -267,6 +267,8 @@ void main() {
   printf("\n\n"); 
 
   fclose(label_file); 
+
+  return 0;
 
 }
 
