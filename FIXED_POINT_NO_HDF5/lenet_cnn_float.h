@@ -50,26 +50,7 @@ void ReadPgmFile(char *filename, unsigned char *pix);
 void WritePgmFile(char *filename, float *pix, short width, short height); 
 void ReadTestLabels(char *filename, short size); 
 void RescaleImg(unsigned char *input, short width,short height, float *output, short new_width, short new_height); 
-//void NormalizeImg(unsigned char *input, float *output, short width, short height); 
-void NormalizeImg(unsigned char *input, unsigned char *output, short width, short height); 
-void ReadConv1Weights(char *filename, char *datasetname, short weight[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]); 
-void ReadConv1Bias(char *filename, char *datasetname, short *bias); 
-void ReadConv2Weights(char *filename, char *datasetname, short weight[CONV2_NBOUTPUT][CONV1_NBOUTPUT][CONV2_DIM][CONV2_DIM]); 
-void ReadConv2Bias(char *filename, char *datasetname, short *bias); 
-void ReadFc1Weights(char *filename, char *datasetname, short weight[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]); 
-void ReadFc1Bias(char *filename, char *datasetname, short *bias); 
-void ReadFc2Weights(char *filename, char *datasetname, short weight[FC2_NBOUTPUT][FC1_NBOUTPUT]); 
-void ReadFc2Bias(char *filename, char *datasetname, short *bias); 
-void WriteWeights(char *filename, short weight[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM]); 
-void WriteWeightsConv2(char *filename, short weight[CONV2_NBOUTPUT][POOL1_NBOUTPUT][CONV2_DIM][CONV2_DIM]);
-void WriteWeightsFc1(char *filename, short weight[FC1_NBOUTPUT][POOL2_NBOUTPUT][POOL2_HEIGHT][POOL2_WIDTH]);
-void WriteWeightsFc2(char *filename, short weight[FC2_NBOUTPUT][FC1_NBOUTPUT]);
-void WriteBiases(char *filename, short bias[FC2_NBOUTPUT]);
-
-//conv1_bias[CONV1_NBOUTPUT]
-//conv2_bias[CONV2_NBOUTPUT]
-//fc1_bias[FC1_NBOUTPUT]
-//fc2_bias[FC2_NBOUTPUT]
+void NormalizeImg(unsigned char *input, unsigned char *output, short width, short height);  
 
 void Conv1_28x28x1_5x5x20_1_0(	unsigned char	input[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH], 	                // IN
 				                short 		    kernel[CONV1_NBOUTPUT][IMG_DEPTH][CONV1_DIM][CONV1_DIM], 	// IN

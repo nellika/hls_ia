@@ -75,24 +75,6 @@ int main() {
 
   printf("\e[1;1H\e[2J");
 
-  //printf("\nReading weights \n"); 
-  //ReadConv1Weights(hdf5_filename, conv1_weights, CONV1_KERNEL);
-  //ReadConv1Bias(hdf5_filename, conv1_bias, CONV1_BIAS); 
-  //ReadConv2Weights(hdf5_filename, conv2_weights, CONV2_KERNEL);
-  //ReadConv2Bias(hdf5_filename, conv2_bias, CONV2_BIAS); 
-  //ReadFc1Weights(hdf5_filename, fc1_weights, FC1_KERNEL);
-  //ReadFc1Bias(hdf5_filename, fc1_bias, FC1_BIAS);
-  //ReadFc2Weights(hdf5_filename, fc2_weights, FC2_KERNEL);
-  //ReadFc2Bias(hdf5_filename, fc2_bias, FC2_BIAS);
-//DONE WriteWeights("CONV1_KERNEL.txt", CONV1_KERNEL); 
-//DONE WriteBiases("CONV1_BIAS.txt", CONV1_BIAS);
-//DONE WriteWeightsConv2("CONV2_KERNEL.txt", CONV2_KERNEL);
-//DONE WriteBiases("CONV2_BIAS.txt", CONV2_BIAS);
-//DONE WriteWeightsFc1("FC1_KERNEL.txt", FC1_KERNEL);
-//DONE WriteBiases("FC1_BIAS.txt", FC1_BIAS);
-//DONE WriteWeightsFc2("FC2_KERNEL.txt", FC2_KERNEL);
-//DONE WriteBiases("FC2_BIAS.txt", FC2_BIAS);
-
   printf("\nOpening labels file \n"); 
   label_file = fopen( test_labels_filename, "r" );
   if (!label_file) {
@@ -132,34 +114,16 @@ int main() {
     strcat(img_filename, "].pgm");
 
 /**/    printf("\033[%d;%dH%s\n", 7, 0, img_filename);
-//    printf("%s\n", img_filename);
 
     ReadPgmFile(img_filename, (unsigned char *)REF_IMG); 
 
-    //NormalizeImg((unsigned char *)REF_IMG, (float *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH); 
     NormalizeImg((unsigned char *)REF_IMG, (unsigned char *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH); 
-/*  for (z = 0; z < IMG_DEPTH; z++)
-    for (y=0; y<IMG_HEIGHT; y++) {
-      for (x=0; x<IMG_WIDTH; x++)  
-        printf("%d ", INPUT_NORM[z][y][x]);
-      printf("\n");
-    }*/
-
 
 
 
 ////    xilinx_start = sds_clock_counter();
 
-    lenet_cnn(	INPUT_NORM, 				
-				//CONV1_KERNEL, 		
-				//CONV1_BIAS, 		
-				//CONV2_KERNEL, 			
-				//CONV2_BIAS, 			
-				//FC1_KERNEL, 				
-				//FC1_BIAS, 				
-				//FC2_KERNEL,					
-				//FC2_BIAS,					
-				FC2_OUTPUT); 
+    lenet_cnn(INPUT_NORM, FC2_OUTPUT); 
 
 ////    xilinx_end = sds_clock_counter(); 
 
