@@ -24,6 +24,14 @@ void Conv1_28x28x1_5x5x20_1_0(  unsigned char input[IMG_DEPTH][IMG_HEIGHT][IMG_W
   unsigned short o,h,w,x,y;
   short imgPart[CONV1_DIM][CONV1_DIM];
   int conv_px_sum;
+
+  unsigned short i,j,k;
+  unsigned char input_to_partition[IMG_DEPTH][IMG_HEIGHT][IMG_WIDTH];
+  //fill temp array
+  for (i = 0; i < IMG_DEPTH; i++)
+    for (j = 0; j < IMG_HEIGHT; j++)
+      for (k = 0; k < IMG_WIDTH; k++)
+        input_to_partition[i][j][k] = input[i][j][k];
   
   for(o = 0; o < CONV1_NBOUTPUT; o++){
     for(h = 0; h < CONV1_HEIGHT; h++){
@@ -34,7 +42,7 @@ void Conv1_28x28x1_5x5x20_1_0(  unsigned char input[IMG_DEPTH][IMG_HEIGHT][IMG_W
         for(y = 0; y < CONV1_DIM; y++){
           for(x = 0; x < CONV1_DIM; x++){
             //imgPart[y][x]=input[0][h+y][w+x];
-            conv_px_sum = conv_px_sum + input[0][h+y][w+x]*kernel[o][0][y][x];
+            conv_px_sum = conv_px_sum + input_to_partition[0][h+y][w+x]*kernel[o][0][y][x];
           }
         }
         //conv_px=sumProduct(imgPart,kernel[o][0]);
@@ -60,6 +68,14 @@ void Conv2_12x12x20_5x5x40_1_0( short input[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_
   unsigned short f,d,o,h,w,x,y,oh,ow;
   short imgPart[CONV2_DIM][CONV2_DIM];
   int conv_px_sum;
+
+  unsigned short i,j,k;
+  short input_to_partition[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_WIDTH];
+  //fill temp array
+  for (i = 0; i < POOL1_NBOUTPUT; i++)
+    for (j = 0; j < POOL1_HEIGHT; j++)
+      for (k = 0; k < POOL1_WIDTH; k++)
+        input_to_partition[i][j][k] = input[i][j][k];
   
   for(f=0;f<CONV2_NBOUTPUT;f++){
     for(d=0;d<POOL1_NBOUTPUT;d++){
@@ -70,7 +86,7 @@ void Conv2_12x12x20_5x5x40_1_0( short input[POOL1_NBOUTPUT][POOL1_HEIGHT][POOL1_
           for(y = 0; y < CONV2_DIM; y++){ //prepare 5X5 imgPart for the convolution
             for(x = 0; x < CONV2_DIM; x++){
               //imgPart[y][x]=input[d][y+h][x+w];
-              conv_px_sum = conv_px_sum + input[d][h+y][w+x]*kernel[f][d][y][x];
+              conv_px_sum = conv_px_sum + input_to_partition[d][h+y][w+x]*kernel[f][d][y][x];
             }
           }
 
