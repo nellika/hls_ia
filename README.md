@@ -5,11 +5,11 @@ The goal of the project is the full development of a Convolutional Neural Networ
 - Board: Zynq, ZedBoard
 - SW: Vivado, Vivado HLS, SDSoC
 
+## Steps for implementation
+### Phase1 - Implement LeNet CNN (C)
 
-## Phase1 - Implement LeNet CNN (C)
+### Phase2 - Create fixed point implementation
 
-## Phase2 - Create fixed point implementation
+### Phase3 - Removal of hdf5 dependencies
 
-## Phase3 - Removal of hdf5 dependencies
-
-## Phase5 - Add pragmas, decrease latency
+### Phase5 - Add pragmas, decrease latency
