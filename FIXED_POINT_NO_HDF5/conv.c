@@ -1,11 +1,10 @@
 /**
   ******************************************************************************
   * @file    lenet_cnn_float.c
-  * @author  Sébastien Bilavarn, LEAT, CNRS, Université Côte d'Azur, France
-  * @version V1.0
-  * @date    04 february 2019
-  * @brief   Plain C code for the implementation of Convolutional Neural Networks on FPGA
-  * @brief   Designed to support Vivado HLS synthesis
+  * @author  Chaitanya Devidas Gore, Bogdan Mihai Nistor, Nelli Nyisztor, Université Côte d'Azur, France
+  * @version V3.0
+  * @date    07 september 2020
+  * @brief   Convolutional layers for modified LeNet5
   */
 
 #include <stdio.h>

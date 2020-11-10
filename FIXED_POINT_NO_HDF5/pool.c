@@ -1,3 +1,12 @@
+/**
+  ******************************************************************************
+  * @file    pool.c
+  * @author  Chaitanya Devidas Gore, Bogdan Mihai Nistor, Nelli Nyisztor, Université Côte d'Azur, France
+  * @version V3.0
+  * @date    07 september 2020
+  * @brief   Pooling layers for modified LeNet5
+  */
+
 #include <stdio.h>
 #include <stdlib.h>
 
