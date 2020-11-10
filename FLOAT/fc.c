@@ -59,12 +59,6 @@ void Fc2_400_10(	float 	input[FC1_NBOUTPUT], 			        // IN
     for(d=0;d<FC1_NBOUTPUT;d++){
       fc_sum+=input[d]*kernel[o][d];
     }
-
-    //neuron activation
-    if(fc_sum+bias[o]<=0){
-      output[o]=0;
-    }else{
-      output[o]=fc_sum+bias[o];
-    }
+    output[o]=fc_sum+bias[o];
   }  
 }
