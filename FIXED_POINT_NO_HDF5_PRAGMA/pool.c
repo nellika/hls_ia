@@ -32,6 +32,7 @@ void Pool1_24x24x20_2x2x20_2_0( short input[CONV1_NBOUTPUT][CONV1_HEIGHT][CONV1_
 
     for (i = 0; i < CONV1_NBOUTPUT; i++){   // 20
       out_h=0;
+      #pragma HLS pipeline
       for (h = 0; h < CONV1_HEIGHT; h+=2){  // 20*12 > 240
         out_w=0;
         for (w = 0; w < CONV1_WIDTH; w+=2){ // 20*12*12 > 2880 iterations
@@ -56,6 +57,7 @@ void Pool2_8x8x40_2x2x40_2_0( short input[CONV2_NBOUTPUT][CONV2_HEIGHT][CONV2_WI
 
     for (j = 0; j < CONV2_NBOUTPUT; j++){   // 40
       out_h=0;
+      #pragma HLS pipeline
       for (h = 0; h < CONV2_HEIGHT; h+=2){  // 40*4 > 160
         out_w=0;
         for (w = 0; w < CONV2_WIDTH; w+=2){ // 40*4*4 > 640 iterations
