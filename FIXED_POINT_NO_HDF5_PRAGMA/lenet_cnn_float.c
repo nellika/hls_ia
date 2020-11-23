@@ -58,7 +58,7 @@ float SOFTMAX_OUTPUT[FC2_NBOUTPUT];
 
 int main()
 {
-  short x, y, z, k, m;
+  short k, m;
   char *test_labels_filename = "mnist/t10k-labels-idx1-ubyte";
   FILE *label_file;
   int ret;
