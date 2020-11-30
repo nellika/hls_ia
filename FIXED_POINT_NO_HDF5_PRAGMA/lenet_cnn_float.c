@@ -21,7 +21,7 @@
 #include <sys/time.h>
 
 // Xilinx time measurement
-//#include "sds_lib.h"
+#include "sds_lib.h"
 
 #include "lenet_cnn_float.h"
 #include "weights.h"
@@ -119,25 +119,26 @@ int main()
     strcat(img_filename, img_count);
     strcat(img_filename, "].pgm");
 
-    /**/ printf("\033[%d;%dH%s\n", 7, 0, img_filename);
+    /*printf("\033[%d;%dH%s\n", 7, 0, img_filename); */
 
     ReadPgmFile(img_filename, (unsigned char *)REF_IMG);
 
     NormalizeImg((unsigned char *)REF_IMG, (unsigned char *)INPUT_NORM, IMG_WIDTH, IMG_WIDTH);
 
-    ////    xilinx_start = sds_clock_counter();
+    xilinx_start = sds_clock_counter();
 
+    // main cnn function with reduced parameters (result of hdf5 removal)
     lenet_cnn(INPUT_NORM, FC2_OUTPUT);
 
-    ////    xilinx_end = sds_clock_counter();
+    xilinx_end = sds_clock_counter();
 
     Softmax(FC2_OUTPUT, SOFTMAX_OUTPUT);
-    /**/ printf("\n\nSoftmax output: \n");
+    /* printf("\n\nSoftmax output: \n"); */
     max = 0;
     number = 0;
     for (k = 0; k < FC2_NBOUTPUT; k++)
     {
-      /**/ printf("%.2f%% ", SOFTMAX_OUTPUT[k] * 100);
+      /* printf("%.2f%% ", SOFTMAX_OUTPUT[k] * 100); */
       if (SOFTMAX_OUTPUT[k] > max)
       {
         max = SOFTMAX_OUTPUT[k];
@@ -145,7 +146,7 @@ int main()
       }
     }
 
-    /**/ printf("\n\nPredicted: %d \t Actual: %d\n", labels_legend[number], label);
+    /* printf("\n\nPredicted: %d \t Actual: %d\n", labels_legend[number], label); */
     if (labels_legend[number] != label)
       error = error + 1;
 
@@ -168,7 +169,7 @@ int main()
   printf("\n\nErrors : %d / %d", error, m);
   printf("\n\nSuccess rate = %f%%", (1 - ((float)error / m)) * 100);
 
-  ////  printf("\n\nThw_min = %lld cpu cycles \t Thw_max = %lld cpu cycles \t Thw_avg = %lld cpu cycles (Xilinx) ", xilinx_time_min, xilinx_time_max, xilinx_time_avg/m );
+  printf("\n\nThw_min = %lld cpu cycles \t Thw_max = %lld cpu cycles \t Thw_avg = %lld cpu cycles (Xilinx) ", xilinx_time_min, xilinx_time_max, xilinx_time_avg/m );
 
   printf("\n\n");
 
